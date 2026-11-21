@@ -24,7 +24,9 @@
     .choice input { flex: none; margin: 0; }
     input[type="text"], textarea { display: block; width: 100%; margin-top: 0.45rem; padding: 0.5rem; border: 1px solid #708598; border-radius: 0.3rem; background: #fff; color: inherit; font: inherit; }
     textarea { resize: vertical; }
-    input:focus-visible, textarea:focus-visible { outline: 2px solid #145d99; outline-offset: 2px; }
+    .print-button { padding: 0.55rem 0.9rem; border: 1px solid #36556d; border-radius: 0.3rem; background: #36556d; color: #fff; font: inherit; font-weight: 600; cursor: pointer; }
+    button:focus-visible, input:focus-visible, textarea:focus-visible { outline: 2px solid #145d99; outline-offset: 2px; }
+    .print-answer { display: none; }
     figure { margin: 0.8rem 0; }
     svg { display: block; width: 100%; max-width: 25rem; height: auto; }
     figcaption, caption { text-align: left; }
@@ -35,8 +37,12 @@
     td { text-align: right; }
     @media print {
       main { max-width: none; padding: 0; }
-      h2 { break-after: avoid; }
+      .screen-only, .has-print-answer { display: none; }
+      h2, .prompt { break-after: avoid; }
       fieldset, figure, table { break-inside: avoid; }
+      .choice input:checked + span { font-weight: 700; }
+      .choice input:checked + span::after { content: " (Selected)"; }
+      .print-answer:not(:empty) { display: block; margin-top: 0.45rem; padding: 0.25rem 0.5rem; border-left: 2px solid #708598; white-space: pre-wrap; overflow-wrap: anywhere; }
     }
   </style>
 </head>
@@ -46,7 +52,8 @@
     <p class="summary">Grade 7 &middot; 28 questions &middot; 64 marks</p>
     <h1>Global Citizenship Practice Quiz</h1>
     <p>Social Justice, Peace and Conflict, and Identity and Diversity</p>
-    <p>Answer on paper or type here. The page does not submit or save responses, so copy your answers and record your choices before closing or refreshing it.</p>
+    <p class="screen-only">Answer on paper or type here. Use <strong>Submit &amp; Print</strong> to print your current answers or save a PDF. Nothing is sent or saved by this page.</p>
+    <p class="screen-only"><button class="print-button" type="button" hidden>Submit &amp; Print</button></p>
     <aside class="guide" aria-label="Answering guide">
       <p><strong>Identify or state:</strong> Give the exact number of points requested. <strong>Distinguish:</strong> Make the difference between the ideas clear.</p>
       <p><strong>Explain:</strong> Give a point, show how or why it happens, and state its effect. <strong>Analyse:</strong> Link the cause to an effect and a further consequence.</p>
@@ -279,6 +286,33 @@
       <textarea id="answer-28" rows="10" aria-describedby="essay-instructions"></textarea>
     </div>
   </section>
+  <p class="screen-only"><button class="print-button" type="button" hidden>Submit &amp; Print</button></p>
 </main>
+<script>
+  const printAnswers = Array.from(document.querySelectorAll('input[type="text"], textarea'), field => {
+    const copy = document.createElement('div');
+    copy.className = 'print-answer';
+    field.after(copy);
+    return { field, copy };
+  });
+
+  function preparePrint() {
+    for (const { field, copy } of printAnswers) {
+      const value = field.value;
+      const answered = value.trim() !== '';
+      copy.textContent = answered ? value : '';
+      field.classList.toggle('has-print-answer', answered);
+    }
+  }
+
+  window.addEventListener('beforeprint', preparePrint);
+  for (const button of document.querySelectorAll('.print-button')) {
+    button.addEventListener('click', () => {
+      preparePrint();
+      window.print();
+    });
+    button.hidden = false;
+  }
+</script>
 </body>
 </html>
