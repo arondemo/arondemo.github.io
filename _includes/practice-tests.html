@@ -1,0 +1,10 @@
+{% assign tests = site.pages | where: "test_subject", include.subject_id | sort: "test_order" %}
+{% if tests.size > 0 %}
+<ul>
+  {% for test in tests %}
+  <li><a href="{{ test.url | relative_url }}"><strong>{{ test.test_label | escape }}</strong></a>{% if test.test_summary %} &mdash; {{ test.test_summary | escape }}{% endif %}</li>
+  {% endfor %}
+</ul>
+{% else %}
+<p>No practice tests have been published for this subject yet.</p>
+{% endif %}

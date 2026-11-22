@@ -1,0 +1,27 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>{{ page.title | escape }}</title>
+  <style>
+    body { margin: 0; background: #fff; color: #182431; font: 1rem/1.55 system-ui, sans-serif; }
+    main { max-width: 49rem; margin: auto; padding: 1.5rem 1rem 3rem; }
+    h1, h2 { line-height: 1.2; }
+    h1 { margin-bottom: 0.4rem; }
+    h2 { margin-top: 2rem; padding-bottom: 0.4rem; border-bottom: 1px solid #abb9c5; }
+    a { color: #145d99; }
+    li + li { margin-top: 0.55rem; }
+    a:focus-visible { outline: 2px solid #145d99; outline-offset: 2px; }
+  </style>
+</head>
+<body>
+<main>
+  {% if page.subject_id %}
+  <nav aria-label="Practice materials"><a href="{{ '/' | relative_url }}">All practice materials</a></nav>
+  {% endif %}
+  <h1>{{ page.title | escape }}</h1>
+  {{ content }}
+</main>
+</body>
+</html>
