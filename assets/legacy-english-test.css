@@ -1,0 +1,4 @@
+---
+permalink: /english-7.1/test.css
+---
+{% include_relative test.css %}
