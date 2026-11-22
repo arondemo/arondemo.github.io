@@ -2,7 +2,6 @@
 layout: practice-catalogue
 title: Grade 7.1 Practice Materials
 ---
-<p><strong><a href="https://arondemo.github.io/bahasa-indonesia-7.1/">Bahasa Indonesia 7.1</a></strong> &mdash; <a href="https://arondemo.github.io/bahasa-indonesia-7.1/test-a.html">Open Test A</a></p>
 <p>Choose a subject or open a practice test below.</p>
 
 {% assign subjects = site.pages | where: "layout", "practice-catalogue" | where_exp: "subject", "subject.subject_id" | sort: "title" %}
